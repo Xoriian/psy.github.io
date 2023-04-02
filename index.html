@@ -1,22 +1,23 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" href="/psy.github.io/index.css">
+    <link rel="stylesheet" href="index.css">
 </head>
 <body>
 <div>
     <title>Le jeu du psychiatre</title>
-    <p><em>Règle du jeu </em>: tous les participants (excepté 1) sont des patients atteints d’un trouble. Le but du psychiatre (le dernier joueur) est de trouver le trouble. Pour cela, le psychiatre pose une question à une personne (et une seule). Il peut poser la même question plusieurs fois, à plusieurs personnes différentes. Les patients répondent à la question en respectant le trouble. Si un patient agit ou répond de façon contraire au trouble, un autre patient crie “Psychopathe”, tous les patients se lèvent et échangent leur place aléatoirement. </p>
+    <p><em>Règle du jeu </em>: tous les participants (excepté 1) sont des patients atteints d’un trouble. Le but du psychiatre (le dernier joueur) est de trouver le trouble. Pour cela, le psychiatre pose une question à une personne (et une seule). Il peut poser la même question plusieurs fois, à plusieurs personnes différentes. Les patients répondent à la question en respectant le trouble. Si un patient agit ou répond de façon contraire au trouble, un autre patient crie “Psychopathe”, ces deux patients se lèvent alors et échangent leur place. </p>
     <p id="texte-aleatoire"></p>
     <button id="bouton-générer">Générer un nouveau texte</button>
+    <div id="minuteur"></div>
     <script>
         const listeDeTextes = ["Chaque réponse doit contenir un nombre entre 0 et 100.",
-        "Vous êtes obsédés par votre ville / région natale",
-        "Vous croyez auditionner pour une pièce de théâtre",
-        "Vous ne pouvez pas employer le son 'S'",
-        "Vous faites des grimaces dès que le psy ne regarde pas",
-        "Chaque patient répond comme s’il était son voisin de droite",
-        "Il doit manquer un mot dans la réponse du patient",
+        "Vous êtes obsédés par votre ville / région natale.",
+        "Vous croyez auditionner pour une pièce de théâtre.",
+        "Vous ne pouvez pas employer le son 'S'.",
+        "Vous faites des grimaces dès que le psy ne regarde pas.",
+        "Chaque patient répond comme s’il était son voisin de droite.",
+        "Il doit manquer un mot dans la réponse du patient.",
         "Chaque fois que votre voisin de gauche parle, vous souriez excessivement.",
         "Vous parlez en employant des mots et / ou des expressions ancien(ne)s.",
         "Vous croyez être du sexe opposé.",
@@ -27,6 +28,14 @@
         "Vous imitez l’intonation et les gestes du psychiatre.",
         "Chaque réponse doit contenir un vêtement.",
         "Répondez négativement à toutes les questions du psychiatre. Si la question ne s’y prête pas, ne répondez pas.",
+        "Les patients croisent tous les jambes lorsque quelqu’un dit un mensonge, et ils les décroisent quand quelqu’un dit la vérité.",
+        "Chaque réponse commence par la lettre suivante de l’alphabet. Donc la première personne donne une réponse commençant par A et la suivante donne une réponse qui commence par B, etc.",
+        "Tous les patients se grattent frénétiquement à chaque fois qu’un mot contenant la lettre 'F' est prononcé.",
+        "Tous les patients doivent montrer leur dents au psychiatre quand il les regarde, mais ne doivent pas les montrer dans le cas contraire.",
+        "Dès qu'un patient parle, il doit toucher la table.",
+        "Les patients ne doivent jamais regarder le psychiatre dans les yeux",
+        "Les patients sont allergiques (éternument, nez qui coule, yeux qui grattent...) quand n'importe qui dit le mot 'tu'.",
+        "Tous les patients viennent d'une époque différente dans le passé, et agissent / répondent comme à cette époque."
         ];
 
         function afficherTexteAleatoire() {
@@ -34,10 +43,30 @@
             const texteAleatoire = listeDeTextes[index];
             document.getElementById("texte-aleatoire").textContent = texteAleatoire;
         }
+
+        var timer = document.getElementById("minuteur");
+		var intervalId;
+
+		function startTimer() {
+            clearInterval(intervalId); // Supprimer le minuteur
+			var count = 60 * 5 + 1; // Temps initial en secondes (5 minutes)
+			intervalId = setInterval(function() {
+				count--;
+				var minutes = Math.floor(count / 60);
+				var seconds = count % 60;
+				timer.innerHTML = "Temps restant : " + minutes + " minute(s) " + seconds + " seconde(s)";
+				if (count == 0) {
+					clearInterval(intervalId);
+					timer.innerHTML = "Temps écoulé !";
+				}
+			}, 1000);
+		}
         
         afficherTexteAleatoire(); // Afficher un texte aléatoire au chargement de la page
-        
+        startTimer();
+
         document.getElementById("bouton-générer").addEventListener("click", afficherTexteAleatoire);
+        document.getElementById("bouton-générer").addEventListener("click", startTimer);
     </script>
   </div>
   </body>
